@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>json</title>
+    <script>
+        function fetchAPI(){
+            return fetch('http://apis.data.go.kr/1250000/tvprgm/getTvprgm?ServiceKey=IugWBg3JqwkSo6mtnvgM3RDX6Z6CULPlCeFW1EGKbTVIEeoOqhT%2FW9faahVSPzQg8Csgv4BZAtqReVxMfIUYgA%3D%3D&pageNo=1&numOfRows=10&keyword=%ED%86%B5%EC%9D%BC&bgng_ymd=20190101&end_ymd=20201220&bgng_time=1200&end_time=1800')
+            .then((response) => response.json())
+            .then((data) => data);
+        }
+        fetchAPI().then((datas) => {
+            console.log(datas.items);
+            showDatas(datas.items);
+        });
+        function showDatas(datas){
+            const ulElement = document.querySelector('#items');
+            ulElement.innerHTML = datas.map((data) => setLiElement(data)).join('');
+        }
+        function setLiElement(data){
+            return `<li>편성일자:${data.frmtn_ymd} 편성시간:${data.frmtn_time} 제목:${data.sj}</li>`;
+        }
+    </script>
+    <style>
+        div {
+            position:relative;
+            z-index:1;
+        }
+        div:after {
+            background-image:url("./Flag_of_North_Korea.svg.png");
+            top:0;
+            left:0;
+            position:absolute;
+            background-size:100%;
+            opacity:0.5!important;
+            filter:alpha(opacity=70);
+            z-index:-1;
+            content:"";
+            width:100%;
+            height:1000px;
+        }
+        li{
+            color: yellow;
+            font-weight: bold;
+            font-size: 30px;
+            line-height: 50px;
+        }
+        h2{
+            color: yellow;
+            font-size: 50px;
+            text-align: center;
+            margin-bottom: 100px;
+        }
+    </style>
+</head>
+<body>
+    <div>
+    <h2>북한 편성 프로그램</h2>
+    <ul id="items">
+    </ul>
+    </div>
+</body>
+</html>
